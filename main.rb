@@ -1,4 +1,3 @@
-require 'pry-byebug'
 require_relative 'mastermind_module'
 require_relative 'mastermind'
 require_relative 'player'
