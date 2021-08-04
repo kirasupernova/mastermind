@@ -21,25 +21,34 @@ module Mastermind
   end 
 
   def give_feedback(code, guess)
-    feedback = []
     unused_code = code
     unused_guess = guess
+    feedback = feedback_add_x(guess, code, unused_code, unused_guess)
+    feedback.sort.reverse
+  end
+
+  def feedback_add_x(guess, code, unused_code, unused_guess)
+    feedback = []
     guess.each_with_index do |num, index|
-      if num == code[index]
-        feedback.push('X')
-        unused_code = unused_code.reject.with_index { |_el, ind| ind == unused_code.index(num) }
-        unused_guess = unused_guess.reject.with_index { |_el, ind| ind == unused_guess.index(num) }
-      end 
-    end 
+      next if num != code[index]
+
+      feedback.push('X')
+      unused_code = unused_code.reject.with_index { |_el, ind| ind == unused_code.index(num) }
+      unused_guess = unused_guess.reject.with_index { |_el, ind| ind == unused_guess.index(num) }
+    end
+    feedback_dash_o(unused_guess, unused_code, feedback)
+  end
+
+  def feedback_dash_o(unused_guess, unused_code, feedback)
     unused_guess.each do |num|
       if unused_code.include?(num)
         feedback.push('O')
         unused_code = unused_code.reject.with_index { |_el, ind| ind == unused_code.index(num) }
       else
         feedback.push('-')
-      end 
-    end 
-    feedback.sort.reverse
-  end 
+      end
+    end
+    feedback
+  end
 end
 
